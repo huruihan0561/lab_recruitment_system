@@ -2,6 +2,7 @@ package com.lab.util;
 
 import java.util.regex.Pattern;
 
+//格式矫正
 public class ValidatorUtil {
 
     private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");

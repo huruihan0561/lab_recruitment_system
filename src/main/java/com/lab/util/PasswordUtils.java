@@ -4,6 +4,8 @@ package com.lab.util;
 import cn.hutool.crypto.digest.BCrypt;
 import org.springframework.stereotype.Component;
 
+
+//密码加密
 @Component
 public class PasswordUtils {
     public static String encode(String raw) {

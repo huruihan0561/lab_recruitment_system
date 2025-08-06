@@ -17,9 +17,6 @@ public class EmailUtil {
     @Value("${spring.mail.username}")
     private String from;
 
-    /**
-     * 发送简单文本邮件
-     */
     public void sendSimpleMail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
@@ -29,11 +26,9 @@ public class EmailUtil {
         mailSender.send(message);
     }
 
-    /**
-     * 发送验证码邮件
-     */
+   //发送邮箱验证码
     public void sendVerificationCode(String to, String code) {
-        String subject = "实验室纳新系统 - 验证码";
+        String subject = "TC实验室纳新系统 - 验证码";
         String content = String.format("您的验证码是：%s，有效期5分钟。请勿向他人泄露。", code);
         sendSimpleMail(to, subject, content);
     }
