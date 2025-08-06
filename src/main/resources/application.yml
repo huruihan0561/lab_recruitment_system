@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lab_recruit?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 123456
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
+  mail:
+    host: smtp.qq.com
+    username: 3267872945@qq.com
+    password: xbrhxprzzbktchgc
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.lab.mapper: debug
