@@ -23,11 +23,4 @@ public class Admin {
    @Schema(description = "电话号码")
     private String phone;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

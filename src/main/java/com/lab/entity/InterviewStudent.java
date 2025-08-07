@@ -29,5 +29,5 @@ public class InterviewStudent {
     private Date applyTime;
     
     @Schema(description = "面试时间")
-    private Integer interviewed;
+    private Date interviewTime;
 }
