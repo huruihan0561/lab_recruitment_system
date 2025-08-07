@@ -5,11 +5,13 @@ import com.lab.entity.Admin;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.mapper.AdminMapper;
+import com.lab.mapper.InterviewResultMapper;
 import com.lab.mapper.InterviewStudentMapper;
 import com.lab.mapper.StudentMapper;
 import com.lab.service.AdminService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
+import com.lab.vo.InterviewResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,10 @@ public class AdminServiceImpl implements AdminService {
         private InterviewStudentMapper interviewStudentMapper;
         @Autowired
         private JwtUtil jwtUtil;
+    @Autowired
+    private InterviewResultMapper interviewResultMapper;
 
-        @Override
+    @Override
         public String login(String username, String password) {
             Admin admin = adminMapper.selectByUsername(username);
             if (admin == null || !PasswordUtils.matches(password, admin.getPassword()))
@@ -60,5 +64,8 @@ public class AdminServiceImpl implements AdminService {
             interviewStudentMapper.deleteById(id);
         }
 
-
+    @Override
+    public List<InterviewResultVO> listInterviewResults() {
+        return interviewResultMapper.selectInterviewResults();
+    }
 }

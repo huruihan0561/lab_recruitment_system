@@ -3,6 +3,7 @@ package com.lab.controller;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
+import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,6 +59,12 @@ public class AdminController {
     public ResultVO<Void> delete(@PathVariable Integer id) {
         adminService.deleteInterviewStudent(id);
         return ResultVO.success();
+    }
+
+    @GetMapping("/interview-results")
+    @Operation(summary = "查看所有学生面试结果")
+    public ResultVO<List<InterviewResultVO>> interviewResults() {
+        return ResultVO.success(adminService.listInterviewResults());
     }
 
 

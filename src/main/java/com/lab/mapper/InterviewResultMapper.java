@@ -9,9 +9,12 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+
+@Mapper
 public interface InterviewResultMapper extends BaseMapper<InterviewResult> {
     @Select("SELECT r.id, r.student_id, s.name, r.status " +
-            "FROM interview_result r JOIN student s ON r.student_id = s.student_id " +
-            "WHERE r.student_id = #{studentId}")
-    List<InterviewResultVO> getResultWithName(String studentId);
+            "FROM interview_result r JOIN student s ON r.student_id = s.student_id")
+    List<InterviewResultVO> selectInterviewResults();
+
+
 }

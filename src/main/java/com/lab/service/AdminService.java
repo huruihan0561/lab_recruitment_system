@@ -1,9 +1,8 @@
 package com.lab.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.lab.entity.Admin;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
+import com.lab.vo.InterviewResultVO;
 
 import java.util.List;
 
@@ -14,4 +13,5 @@ public interface AdminService {
     void addInterviewStudent(InterviewStudent stu);
     void updateInterviewStudent(InterviewStudent stu);
     void deleteInterviewStudent(Integer id);
+    List<InterviewResultVO> listInterviewResults();
 }

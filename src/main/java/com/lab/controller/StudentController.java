@@ -2,6 +2,8 @@ package com.lab.controller;
 
 import com.lab.dto.LoginDTO;
 import com.lab.dto.RegisterDTO;
+import com.lab.entity.InterviewStudent;
+import com.lab.mapper.InterviewStudentMapper;
 import com.lab.service.StudentService;
 import com.lab.vo.DirectionVO;
 import com.lab.vo.InterviewResultVO;
@@ -20,6 +22,8 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private InterviewStudentMapper interviewStudentMapper;
 
     @PostMapping("/register")
     @Operation(summary = "学生注册")
@@ -34,6 +38,13 @@ public class StudentController {
         return ResultVO.success(studentService.login(dto));
     }
 
+    @PostMapping("/apply")
+    @Operation(summary = "学生报名")
+    public ResultVO<Void> apply(@RequestBody InterviewStudent dto) {
+        interviewStudentMapper.insert(dto);
+        return ResultVO.success();
+    }
+
     @GetMapping("/directions")
     @Operation(summary = "查看四大方向")
     public ResultVO<List<DirectionVO>> directions() {
@@ -42,13 +53,9 @@ public class StudentController {
 
     @GetMapping("/interview-result")
     @Operation(summary = "查看面试结果")
-    public ResultVO<List<InterviewResultVO>> result(@RequestParam String studentNo) {
-        return ResultVO.success(studentService.getInterviewResult(studentNo));
+    public ResultVO<List<InterviewResultVO>> result(@RequestParam String studentId) {
+        return ResultVO.success(studentService.getInterviewResult(studentId));
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
-    }
 
 }
