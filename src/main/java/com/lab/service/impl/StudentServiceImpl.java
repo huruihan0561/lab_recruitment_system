@@ -35,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
     public void register(RegisterDTO dto) {
         ValidatorUtil.validatePhone(dto.getPhone());
         if (dto.getPassword().length() < 6) throw new IllegalArgumentException("密码不足6位");
-        if (studentMapper.selectCount(new QueryWrapper<Student>().eq("student_no", dto.getStudentId())) > 0)
+        if (studentMapper.selectCount(new QueryWrapper<Student>().eq("student_id", dto.getStudentId())) > 0)
             throw new IllegalArgumentException("学号已存在");
 
         Student stu = new Student();
