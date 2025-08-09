@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(description = "登录参数DTO")
+@Schema(description = "学生登录参数DTO")
 public class LoginDTO {
     @NotNull(message = "学号/用户名不能为空")
     private String studentId;

@@ -21,7 +21,13 @@ public class InterviewStudent {
     
     @Schema(description = "学生姓名")
     private String name;
-    
+
+    @Schema(description = "学生邮箱")
+    private String email;
+
+    @Schema(description = "学生电话不能为空")
+    private String phone;
+
     @Schema(description = "报名方向")
     private String direction;
     

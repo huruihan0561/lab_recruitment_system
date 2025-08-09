@@ -1,5 +1,7 @@
 package com.lab.controller;
 
+import com.lab.dto.AdminLoginDTO;
+import com.lab.dto.AdminRegisterDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
@@ -8,6 +10,7 @@ import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +23,18 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @PostMapping("/register")
+    @Operation(summary = "管理员注册")
+    public ResultVO<Void> register(@Validated @RequestBody AdminRegisterDTO dto) {
+        adminService.register(dto);
+        return ResultVO.success();
+    }
+
+
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
-    public ResultVO<String> login(@RequestParam String username,
-                                  @RequestParam String password) {
-        return ResultVO.success(adminService.login(username, password));
+    public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto) {
+        return ResultVO.success(adminService.login(dto));
     }
 
     @GetMapping("/students")

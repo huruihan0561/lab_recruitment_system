@@ -1,9 +1,11 @@
 package com.lab.dto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 @Data
+@Schema(description = "学生注册参数DTO")
 public class RegisterDTO {
 
         @NotNull(message = "姓名不能为空！")
@@ -24,6 +26,6 @@ public class RegisterDTO {
         private String email;
 
         @NotNull(message = "密码不能为空！")
-        @Range(min = 6, message = "密码长度不能小于6位！")
+        @Size(min = 6, message = "密码长度不能小于6位！")
         private String password;
     }

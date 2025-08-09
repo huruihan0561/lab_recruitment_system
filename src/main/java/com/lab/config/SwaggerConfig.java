@@ -17,7 +17,8 @@ public class SwaggerConfig {
                         .description("实验室纳新系统的接口文档，包含用户认证、信息查询等功能")
                         .version("2.0")
                         .contact(new Contact()
-                                .name("TC实验室纳新QQ群：xxx")));
+                                .name("联系TC实验室")
+                                .url("TC实验室纳新QQ群：xxx")));
     }
 }
     

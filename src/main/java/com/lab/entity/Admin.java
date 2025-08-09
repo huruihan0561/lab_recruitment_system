@@ -16,7 +16,10 @@ public class Admin {
     
     @Schema(description = "用户名")
     private String username;
-    
+
+    @Schema(description = "管理员id")
+    private String adminId;
+
     @Schema(description = "密码")
     private String password;
     
