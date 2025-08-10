@@ -41,11 +41,11 @@ public class AdminController {
     public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto,
                                   @RequestParam String captcha,
                                   HttpSession session) {
-        String cache = (String) session.getAttribute("captcha");
+        String cache = redisTemplate.opsForValue().get("captcha:" + session.getId());
         if (!captcha.equalsIgnoreCase(cache)) {
             return ResultVO.fail("验证码错误");
         }
-        session.removeAttribute("captcha");
+        redisTemplate.delete("captcha:" + session.getId());
         return ResultVO.success(adminService.login(dto));
     }
 
