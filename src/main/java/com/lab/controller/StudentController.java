@@ -14,6 +14,7 @@ import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,14 @@ public class StudentController {
 
     @PostMapping("/login")
     @Operation(summary = "学生登录")
-    public ResultVO<String> login(@Validated @RequestBody LoginDTO dto) {
+    public ResultVO<String> login(@Validated @RequestBody LoginDTO dto,
+                                  @RequestParam String captcha,
+                                  HttpSession session) {
+        String cache = (String) session.getAttribute("captcha");
+        if (!captcha.equalsIgnoreCase(cache)) {
+            return ResultVO.fail("验证码错误");
+        }
+        session.removeAttribute("captcha");
         return ResultVO.success(studentService.login(dto));
     }
 

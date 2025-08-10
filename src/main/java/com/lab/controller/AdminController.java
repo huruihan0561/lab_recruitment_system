@@ -9,7 +9,9 @@ import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @PostMapping("/register")
     @Operation(summary = "管理员注册")
     public ResultVO<Void> register(@Validated @RequestBody AdminRegisterDTO dto) {
@@ -33,7 +38,14 @@ public class AdminController {
 
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
-    public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto) {
+    public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto,
+                                  @RequestParam String captcha,
+                                  HttpSession session) {
+        String cache = (String) session.getAttribute("captcha");
+        if (!captcha.equalsIgnoreCase(cache)) {
+            return ResultVO.fail("验证码错误");
+        }
+        session.removeAttribute("captcha");
         return ResultVO.success(adminService.login(dto));
     }
 
