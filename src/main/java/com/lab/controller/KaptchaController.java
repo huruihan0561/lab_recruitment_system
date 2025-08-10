@@ -31,18 +31,18 @@ public class KaptchaController {
 
     // 生成验证码图片
     @GetMapping("/image")
-    public void captchaImage(HttpSession session, HttpServletResponse response) throws IOException {
+    public void kaptchaImage(HttpSession session, HttpServletResponse response) throws IOException {
         String text = kaptcha.createText();
-        redisTemplate.opsForValue().set("captcha:" + session.getId(), text, Duration.ofMinutes(5));
+        redisTemplate.opsForValue().set("kaptcha:" + session.getId(), text, Duration.ofMinutes(5));
         response.setContentType("image/jpeg");
         ImageIO.write(kaptcha.createImage(text), "jpg", response.getOutputStream());
     }
 
     // 校验验证码
     @PostMapping("/verify")
-    public ResultVO<Void> verify(@RequestParam String captcha, HttpSession session) {
-        String cache = redisTemplate.opsForValue().get("captcha:" + session.getId());
-        if (cache == null || !cache.equalsIgnoreCase(captcha)) {
+    public ResultVO<Void> verify(@RequestParam String kaptcha, HttpSession session) {
+        String cache = redisTemplate.opsForValue().get("kaptcha:" + session.getId());
+        if (cache == null || !cache.equalsIgnoreCase(kaptcha)) {
             return ResultVO.fail("验证码错误或已过期");
         }
         // 一次性使用，校验完立即删除

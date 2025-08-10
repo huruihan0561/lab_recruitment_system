@@ -64,13 +64,13 @@ public class StudentController {
     @PostMapping("/login")
     @Operation(summary = "学生登录")
     public ResultVO<String> login(@Validated @RequestBody LoginDTO dto,
-                                  @RequestParam String captcha,
+                                  @RequestParam String kaptcha,
                                   HttpSession session) {
-        String cache = redisTemplate.opsForValue().get("captcha:" + session.getId());
-        if (!captcha.equalsIgnoreCase(cache)) {
+        String cache = redisTemplate.opsForValue().get("kaptcha:" + session.getId());
+        if (!kaptcha.equalsIgnoreCase(cache)) {
             return ResultVO.fail("验证码错误");
         }
-        redisTemplate.delete("captcha:" + session.getId());
+        redisTemplate.delete("kaptcha:" + session.getId());
         return ResultVO.success(studentService.login(dto));
     }
 
