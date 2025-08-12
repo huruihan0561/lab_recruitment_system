@@ -3,16 +3,13 @@ package com.lab.controller;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -46,7 +43,7 @@ public class KaptchaController {
             return ResultVO.fail("验证码错误或已过期");
         }
         // 一次性使用，校验完立即删除
-        redisTemplate.delete("captcha:" + session.getId());
+        redisTemplate.delete("kaptcha:" + session.getId());
         return ResultVO.success();
     }
 

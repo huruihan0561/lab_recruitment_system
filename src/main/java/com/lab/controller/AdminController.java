@@ -30,7 +30,13 @@ public class AdminController {
 
     @PostMapping("/register")
     @Operation(summary = "管理员注册")
-    public ResultVO<Void> register(@Validated @RequestBody AdminRegisterDTO dto) {
+    public ResultVO<Void> register(@Validated @RequestBody AdminRegisterDTO dto,
+                                   @RequestParam String verifyCode) {
+
+        //根据实验室的名字TC的ascall表,验证管理员
+        if(!"8467".equals(verifyCode)){
+            return ResultVO.fail("固定验证码错误");
+        }
         adminService.register(dto);
         return ResultVO.success();
     }
@@ -41,7 +47,7 @@ public class AdminController {
     public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto,
                                   @RequestParam String kaptcha,
                                   HttpSession session) {
-        String cache = redisTemplate.opsForValue().get("captcha:" + session.getId());
+        String cache = redisTemplate.opsForValue().get("kaptcha:" + session.getId());
         if (!kaptcha.equalsIgnoreCase(cache)) {
             return ResultVO.fail("验证码错误");
         }
