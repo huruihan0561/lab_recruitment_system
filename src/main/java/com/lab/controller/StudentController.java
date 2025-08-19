@@ -1,14 +1,13 @@
 package com.lab.controller;
 
 
-import cn.hutool.core.util.RandomUtil;
 import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.LoginDTO;
 import com.lab.dto.RegisterDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.mapper.InterviewStudentMapper;
-import com.lab.service.EmailService;
 import com.lab.service.StudentService;
+import com.lab.util.EmailUtil;
 import com.lab.vo.DirectionVO;
 import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
@@ -22,7 +21,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -35,28 +33,22 @@ public class StudentController {
     @Autowired
     private InterviewStudentMapper interviewStudentMapper;
     @Autowired
-    private EmailService emailService;
+    private EmailUtil emailUtil;
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     @PostMapping("/send-code")
     @Operation(summary = "发送邮箱验证码")
     public ResultVO<Void> sendCode(@RequestParam String email){
-        String code = RandomUtil.randomNumbers(6);
-        emailService.sendCode(email, code);
-        redisTemplate.opsForValue().set("code:" + email, code, Duration.ofMinutes(5));
-        return ResultVO.success();
+        return emailUtil.sendCode(email);
     }
 
     @PostMapping("/register")
     @Operation(summary = "学生注册")
     public ResultVO<Void> register(@Validated @RequestBody RegisterDTO dto,@RequestParam String code) {
-        String cache = redisTemplate.opsForValue().get("code:" + dto.getEmail());
-        if (!code.equals(cache)) {
+        if (!emailUtil.validate(dto.getEmail(), code)) {
             return ResultVO.fail("验证码错误或已过期");
         }
-        studentService.register(dto);
-        redisTemplate.delete("code:" + dto.getEmail());
         studentService.register(dto);
         return ResultVO.success();
     }
@@ -77,9 +69,9 @@ public class StudentController {
     @PostMapping("/apply")
     @Operation(summary = "学生报名")
     public ResultVO<Void> apply(@Validated @RequestBody InterviewStudentDTO dto) {
-        InterviewStudent entity = new InterviewStudent();
-        BeanUtils.copyProperties(dto, entity);
-        interviewStudentMapper.insert(entity);
+        InterviewStudent stu = new InterviewStudent();
+        BeanUtils.copyProperties(dto, stu);
+        interviewStudentMapper.insert(stu);
         return ResultVO.success();
     }
 

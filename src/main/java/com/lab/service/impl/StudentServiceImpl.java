@@ -5,7 +5,6 @@ import com.lab.dto.LoginDTO;
 import com.lab.entity.Student;
 import com.lab.dto.RegisterDTO;
 import com.lab.mapper.StudentMapper;
-import com.lab.service.EmailService;
 import com.lab.service.StudentService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
@@ -24,8 +23,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
-    @Autowired
-    private EmailService emailService;
     @Autowired
     private StringRedisTemplate redisTemplate;
     @Autowired
