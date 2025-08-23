@@ -3,9 +3,11 @@ package com.lab.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.LoginDTO;
+import com.lab.entity.InterviewResult;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.dto.RegisterDTO;
+import com.lab.mapper.InterviewResultMapper;
 import com.lab.mapper.InterviewStudentMapper;
 import com.lab.mapper.StudentMapper;
 import com.lab.service.StudentService;
@@ -29,6 +31,8 @@ public class StudentServiceImpl implements StudentService {
     private JwtUtil jwtUtil;
     @Autowired
     private InterviewStudentMapper interviewStudentMapper;
+    @Autowired
+    private InterviewResultMapper interviewResultMapper;
 
     @Override
     public void register(RegisterDTO dto) {
@@ -58,6 +62,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void apply(InterviewStudentDTO dto) {
+        if (interviewStudentMapper.exists(
+                new QueryWrapper<InterviewStudent>().eq("student_id", dto.getStudentId()))) {
+            throw new IllegalArgumentException("已报名，请勿重复提交");
+        }
         Student student = studentMapper.selectOne(
                 new QueryWrapper<Student>().eq("student_id", dto.getStudentId()));
         if (student == null) {
@@ -72,8 +80,15 @@ public class StudentServiceImpl implements StudentService {
         stu.setDirection(dto.getDirection());
         stu.setMotto(dto.getMotto());
         stu.setInterviewTime(dto.getInterviewTime());
-
         interviewStudentMapper.insert(stu);
+
+        InterviewResult result = new InterviewResult();
+        result.setStudentId(dto.getStudentId());
+        result.setStudentName(dto.getName());
+        result.setDirection(dto.getDirection());
+        result.setStatus("待面试");
+        result.setInterviewTime(dto.getInterviewTime());
+        interviewResultMapper.insert(result);
     }
 
     @Override

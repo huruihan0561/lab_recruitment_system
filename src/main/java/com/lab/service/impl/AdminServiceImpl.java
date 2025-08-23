@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.Admin;
+import com.lab.entity.InterviewResult;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.mapper.AdminMapper;
@@ -85,7 +87,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteInterviewStudent(Integer id) {
+    public void deleteInterviewStudent(String id) {
         interviewStudentMapper.deleteById(id);
     }
 
@@ -93,5 +95,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public IPage<Student> searchStudentsByName(int current, int size, String name) {
         return adminMapper.selectStudentsByName(new Page<>(current, size), name);
+    }
+
+    @Override
+    public void updateInterviewResult(UpdateInterviewResultDTO dto) {
+        InterviewResult result = interviewResultMapper.selectOne(
+                new QueryWrapper<InterviewResult>().eq("student_id", dto.getStudentId())
+        );
+        if (result == null) {
+            throw new IllegalArgumentException("该学生未报名或不存在面试记录");
+        }
+        result.setStatus(dto.getStatus());
+        result.setRemark(dto.getRemark());
+        interviewResultMapper.updateById(result);
     }
 }

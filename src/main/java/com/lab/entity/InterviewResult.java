@@ -22,10 +22,16 @@ public class InterviewResult {
     @Schema(description = "学生姓名")
     private String studentName;
 
+    @Schema(description = "面试方向")
+    private String direction;
+
     @Schema(description = "面试结果状态：通过/未通过/待面试")
     private String status;
 
     @Schema(description = "备注")
     private String remark;
+
+    @Schema(description = "面试时间")
+    private Date interviewTime;
 
 }

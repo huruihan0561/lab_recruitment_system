@@ -3,6 +3,7 @@ package com.lab.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
@@ -12,6 +13,7 @@ import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +49,6 @@ public class AdminController {
 
     @PostMapping("/register")
     @Operation(summary = "管理员注册")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResultVO<String> register(@Validated @RequestBody AdminRegisterDTO dto) {
         adminService.register(dto);
         return ResultVO.success("管理员注册成功");
@@ -94,10 +95,17 @@ public class AdminController {
         return ResultVO.success();
     }
 
+    @PutMapping("/interview-result")
+    @Operation(summary = "修改学生面试结果")
+    public ResultVO<Void> updateInterviewResult(@RequestBody @Valid UpdateInterviewResultDTO dto) {
+        adminService.updateInterviewResult(dto);
+        return ResultVO.success();
+    }
+
     @DeleteMapping("/interview-student/{id}")
     @Operation(summary = "删除报名学生")
-    public ResultVO<Void> delete(@PathVariable Integer id) {
-        adminService.deleteInterviewStudent(id);
+    public ResultVO<Void> delete(@PathVariable String studentId) {
+        adminService.deleteInterviewStudent(studentId);
         return ResultVO.success();
     }
 

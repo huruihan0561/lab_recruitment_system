@@ -37,10 +37,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/kaptcha/**",
-                                "/student/register",
-                                "/student/login",
-                                "/admin/login",
-                                "/student/send-code",
+                                "/student/**",
+                                "/admin/**",
                                 "/home/**",
                                 "/password/**",
                                 "/swagger-ui/**",

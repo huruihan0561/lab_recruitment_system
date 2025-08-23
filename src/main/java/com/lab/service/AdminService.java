@@ -3,6 +3,7 @@ package com.lab.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.vo.AdminStudentVO;
@@ -14,7 +15,8 @@ public interface AdminService {
     IPage<AdminStudentVO> listInterviewResults(int current, int size);
     void addInterviewStudent(InterviewStudent stu);
     void updateInterviewStudent(InterviewStudent stu);
-    void deleteInterviewStudent(Integer id);
+    void deleteInterviewStudent(String id);
     IPage<Student> searchStudentsByName(int current, int size, String name);
     void register(AdminRegisterDTO dto);
+    void updateInterviewResult(UpdateInterviewResultDTO dto);
 }

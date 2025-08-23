@@ -1,3 +1,4 @@
+
 -- 学生表
 CREATE TABLE student (
                          id INT PRIMARY KEY AUTO_INCREMENT,
@@ -7,7 +8,6 @@ CREATE TABLE student (
                          major VARCHAR(50) NOT NULL COMMENT '专业',
                          phone VARCHAR(11) NOT NULL COMMENT '手机号',
                          email VARCHAR(100) NOT NULL COMMENT '邮箱'
-
 );
 
 -- 管理员表
@@ -38,5 +38,6 @@ CREATE TABLE interview_result (
                                   student_name VARCHAR(50) NOT NULL COMMENT '学生姓名',
                                   direction ENUM('嵌入式', '后台', '前端', '安卓') NOT NULL COMMENT '意向方向',
                                   status ENUM('待面试', '已通过', '未通过') DEFAULT '待面试' COMMENT '面试状态',
-                                  remark TEXT COMMENT '备注'
+                                  remark TEXT COMMENT '备注',
+                                  interview_time DATETIME COMMENT '面试时间'
 );
