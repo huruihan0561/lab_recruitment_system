@@ -12,12 +12,10 @@ import com.lab.service.StudentService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
 import com.lab.util.ValidatorUtil;
-import com.lab.vo.DirectionVO;
 import com.lab.vo.InterviewResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -60,17 +58,38 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void apply(InterviewStudentDTO dto) {
+        Student student = studentMapper.selectOne(
+                new QueryWrapper<Student>().eq("student_id", dto.getStudentId()));
+        if (student == null) {
+            throw new IllegalArgumentException("学号不存在");
+        }
+
         InterviewStudent stu = new InterviewStudent();
-        stu.setName(dto.getName());
         stu.setStudentId(dto.getStudentId());
+        stu.setName(dto.getName());
+        stu.setEmail(student.getEmail());
+        stu.setPhone(student.getPhone());
         stu.setDirection(dto.getDirection());
         stu.setMotto(dto.getMotto());
         stu.setInterviewTime(dto.getInterviewTime());
+
         interviewStudentMapper.insert(stu);
     }
 
     @Override
     public List<InterviewResultVO> getInterviewResult(String studentId) {
-        return studentMapper.selectInterviewResults(studentId);
+        //验证学生是否存在
+        Student student = studentMapper.selectOne(
+                new QueryWrapper<Student>().eq("student_id", studentId));
+        if (student == null) {
+            throw new IllegalArgumentException("学生不存在");
+        }
+
+        List<InterviewResultVO> results = studentMapper.selectInterviewResults(studentId);
+        if (results.isEmpty()) {
+            throw new IllegalArgumentException("暂无面试结果");
+        }
+
+        return results;
     }
 }

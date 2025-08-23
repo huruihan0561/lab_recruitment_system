@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.dto.AdminLoginDTO;
+import com.lab.dto.AdminRegisterDTO;
 import com.lab.entity.Admin;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
@@ -39,6 +40,21 @@ public class AdminServiceImpl implements AdminService {
         if (admin == null || !PasswordUtils.matches(dto.getPassword(), admin.getPassword()))
             throw new IllegalArgumentException("学号或密码错误");
         return jwtUtil.generateToken(admin.getAdminId());
+    }
+
+    @Override
+    public void register(AdminRegisterDTO dto) {
+        // 校验管理员编号是否已存在
+        if (adminMapper.selectByAdminId(dto.getAdminId()) != null) {
+            throw new IllegalArgumentException("管理员编号已存在");
+        }
+
+        Admin admin = new Admin();
+        admin.setName(dto.getName());
+        admin.setAdminId(dto.getAdminId());
+        admin.setPassword(PasswordUtils.encode(dto.getPassword()));
+        admin.setPhone(dto.getPhone());
+        adminMapper.insert(admin);
     }
 
     @Override

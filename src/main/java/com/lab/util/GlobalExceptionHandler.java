@@ -1,6 +1,7 @@
 package com.lab.util;
 
 import com.lab.vo.ResultVO;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,16 @@ public class GlobalExceptionHandler {
                     bx.getBindingResult().getFieldError().getDefaultMessage();
         }
         return ResultVO.fail(msg);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResultVO<?> handleIllegalArgument(IllegalArgumentException e) {
+        return ResultVO.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResultVO<?> handleUsernameNotFound(UsernameNotFoundException e) {
+        return ResultVO.fail("用户不存在");
     }
 
     @ExceptionHandler(Exception.class)

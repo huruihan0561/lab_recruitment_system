@@ -11,6 +11,12 @@ spring:
     redis:
       port: 6379
       host: localhost
+      connect-timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
 
   mail:
     host: smtp.qq.com
@@ -20,6 +26,9 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
+jwt:
+  secret: x7@d#9a$F6!qZ2&pL4*eW8^rT3%yU1$5sX9@L8!qW7#rY2%tZ4&uO6*pI3@L9!
+  expiration: 86400000 # 24小时有效期
 
 mybatis-plus:
   configuration:

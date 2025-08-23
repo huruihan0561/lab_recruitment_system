@@ -2,12 +2,11 @@ package com.lab.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
-import com.lab.dto.ChangePwdDTO;
+import com.lab.dto.AdminRegisterDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
 import com.lab.service.PasswordService;
-import com.lab.util.JwtUtil;
 import com.lab.vo.AdminStudentVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +43,14 @@ public class AdminController {
         }
         redisTemplate.delete("kaptcha:" + session.getId());
         return ResultVO.success(adminService.login(dto));
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "管理员注册")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResultVO<String> register(@Validated @RequestBody AdminRegisterDTO dto) {
+        adminService.register(dto);
+        return ResultVO.success("管理员注册成功");
     }
 
 

@@ -30,12 +30,12 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    public boolean changeAdminPassword(String username, String oldPwd, String newPwd) {
+    public boolean changeAdminPassword(String adminId, String oldPwd, String newPwd) {
         Admin admin = adminMapper.selectOne(
-                new QueryWrapper<Admin>().eq("username", username));
+                new QueryWrapper<Admin>().eq("admin_Id", adminId));
         if (admin == null || !PasswordUtils.matches(oldPwd, admin.getPassword())) {
             return false;
         }
-        return adminMapper.updatePassword(username, PasswordUtils.encode(newPwd)) > 0;
+        return adminMapper.updatePassword(adminId, PasswordUtils.encode(newPwd)) > 0;
     }
 }
