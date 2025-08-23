@@ -11,13 +11,13 @@ import lombok.Data;
 @Schema(description = "管理员实体类")
 public class Admin {
     @TableId(type = IdType.AUTO)
-    @Schema(description = "管理员ID")
+    @Schema(description = "id")
     private Integer id;
     
     @Schema(description = "用户名")
-    private String username;
+    private String name;
 
-    @Schema(description = "管理员id")
+    @Schema(description = "学号")
     private String adminId;
 
     @Schema(description = "密码")

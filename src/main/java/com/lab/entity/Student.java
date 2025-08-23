@@ -11,7 +11,7 @@ import lombok.Data;
 @Schema(description = "学生实体类")
 public class Student {
     @TableId(type = IdType.AUTO)
-    @Schema(description = "学生ID")
+    @Schema(description = "id")
     private Integer id;
     
     @Schema(description = "密码")

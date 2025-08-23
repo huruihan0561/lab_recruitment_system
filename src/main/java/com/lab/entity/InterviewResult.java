@@ -13,7 +13,7 @@ import java.util.Date;
 @Schema(description = "面试结果实体类")
 public class InterviewResult {
     @TableId(type = IdType.AUTO)
-    @Schema(description = "结果ID")
+    @Schema(description = "id")
     private Integer id;
 
     @Schema(description = "学生学号")
@@ -27,8 +27,5 @@ public class InterviewResult {
 
     @Schema(description = "备注")
     private String remark;
-
-    @Schema(description = "面试时间")
-    private Date interviewTime;
 
 }

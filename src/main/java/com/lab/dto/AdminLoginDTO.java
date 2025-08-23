@@ -7,9 +7,11 @@ import lombok.Data;
 @Data
 @Schema(description = "管理员登录参数DTO")
 public class AdminLoginDTO {
+    @Schema(description = "管理员学号")
     @NotBlank(message = "学号不能为空")
     private String adminId;
 
+    @Schema(description = "密码")
     @NotBlank(message = "密码不能为空")
     private String password;
 }

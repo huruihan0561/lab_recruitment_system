@@ -1,11 +1,14 @@
 package com.lab.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
-import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.ChangePwdDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
-import com.lab.vo.InterviewResultVO;
+import com.lab.service.PasswordService;
+import com.lab.util.JwtUtil;
+import com.lab.vo.AdminStudentVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -28,19 +29,8 @@ public class AdminController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @PostMapping("/register")
-    @Operation(summary = "管理员注册")
-    public ResultVO<Void> register(@Validated @RequestBody AdminRegisterDTO dto,
-                                   @RequestParam String verifyCode) {
-
-        //根据实验室的名字TC的ascall表,验证管理员
-        if(!"8467".equals(verifyCode)){
-            return ResultVO.fail("固定验证码错误");
-        }
-        adminService.register(dto);
-        return ResultVO.success();
-    }
-
+    @Autowired
+    private PasswordService passwordService;
 
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
@@ -55,18 +45,32 @@ public class AdminController {
         return ResultVO.success(adminService.login(dto));
     }
 
+
     @GetMapping("/students")
-    @Operation(summary = "分页查看注册学生")
-    public ResultVO<List<Student>> students(@RequestParam(defaultValue = "1") long current,
-                                            @RequestParam(defaultValue = "10") long size) {
+    @Operation(summary = "查看所有注册学生")
+    public ResultVO<IPage<Student>> students(@RequestParam(defaultValue = "1") int current,
+                                             @RequestParam(defaultValue = "10") int size) {
         return ResultVO.success(adminService.listStudents(current, size));
     }
 
+
     @GetMapping("/interview-students")
-    @Operation(summary = "查看所有报名学生")
-    public ResultVO<List<InterviewStudent>> interviewStudents() {
-        return ResultVO.success(adminService.listInterviewStudents());
+    @Operation(summary ="查看所有报名学生")
+    public ResultVO<IPage<InterviewStudent>> interviewStudents(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResultVO.success(adminService.listInterviewStudents(current, size));
     }
+
+
+    @GetMapping("/interview-results")
+    @Operation(summary = "查看学生面试结果")
+    public ResultVO<IPage<AdminStudentVO>> interviewResults(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResultVO.success(adminService.listInterviewResults(current, size));
+    }
+
 
     @PostMapping("/interview-student")
     @Operation(summary = "添加报名学生")
@@ -89,10 +93,14 @@ public class AdminController {
         return ResultVO.success();
     }
 
-    @GetMapping("/interview-results")
-    @Operation(summary = "查看所有学生面试结果")
-    public ResultVO<List<InterviewResultVO>> interviewResults() {
-        return ResultVO.success(adminService.listInterviewResults());
+
+    @GetMapping("/search")
+    @Operation(summary = "根据学生姓名进行模糊查询")
+    public ResultVO<IPage<Student>> search(
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam String name) {
+        return ResultVO.success(adminService.searchStudentsByName(current, size, name));
     }
 
 

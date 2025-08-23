@@ -6,6 +6,7 @@ import com.lab.dto.LoginDTO;
 import com.lab.dto.RegisterDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.mapper.InterviewStudentMapper;
+import com.lab.service.PasswordService;
 import com.lab.service.StudentService;
 import com.lab.util.EmailUtil;
 import com.lab.vo.DirectionVO;
@@ -36,6 +37,8 @@ public class StudentController {
     private EmailUtil emailUtil;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private PasswordService passwordService;
 
     @PostMapping("/send-code")
     @Operation(summary = "发送邮箱验证码")
@@ -86,6 +89,7 @@ public class StudentController {
     public ResultVO<List<InterviewResultVO>> result(@RequestParam String studentId) {
         return ResultVO.success(studentService.getInterviewResult(studentId));
     }
+
 
 
 }

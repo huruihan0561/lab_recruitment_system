@@ -13,7 +13,7 @@ import java.util.Date;
 @Schema(description = "报名学生实体类")
 public class InterviewStudent {
     @TableId(type = IdType.AUTO)
-    @Schema(description = "报名ID")
+    @Schema(description = "id")
     private Integer id;
     
     @Schema(description = "学生学号")
@@ -25,14 +25,14 @@ public class InterviewStudent {
     @Schema(description = "学生邮箱")
     private String email;
 
-    @Schema(description = "学生电话不能为空")
+    @Schema(description = "学生电话")
     private String phone;
 
-    @Schema(description = "报名方向")
+    @Schema(description = "意向方向")
     private String direction;
-    
-    @Schema(description = "报名时间")
-    private Date applyTime;
+
+    @Schema(description = "座右铭")
+    private String motto;
     
     @Schema(description = "面试时间")
     private Date interviewTime;

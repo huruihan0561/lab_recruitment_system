@@ -1,9 +1,12 @@
 package com.lab.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.LoginDTO;
+import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.dto.RegisterDTO;
+import com.lab.mapper.InterviewStudentMapper;
 import com.lab.mapper.StudentMapper;
 import com.lab.service.StudentService;
 import com.lab.util.JwtUtil;
@@ -14,7 +17,6 @@ import com.lab.vo.InterviewResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class StudentServiceImpl implements StudentService {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private InterviewStudentMapper interviewStudentMapper;
 
     @Override
     public void register(RegisterDTO dto) {
@@ -55,6 +59,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public void apply(InterviewStudentDTO dto) {
+        InterviewStudent stu = new InterviewStudent();
+        stu.setName(dto.getName());
+        stu.setStudentId(dto.getStudentId());
+        stu.setDirection(dto.getDirection());
+        stu.setMotto(dto.getMotto());
+        stu.setInterviewTime(dto.getInterviewTime());
+        interviewStudentMapper.insert(stu);
+    }
+
+    @Override
     public List<DirectionVO> getDirections() {
         return Arrays.asList(
                 new DirectionVO("嵌入式开发", "基础知识： 学习嵌入式系统的基本原理、硬件结构和编程语言（如C、C++）。\n学习硬件： 掌握单片机、传感器、嵌入式系统的设计和开发。\nRTOS学习： 熟悉实时操作系统（RTOS）的使用和应用。\n项目实践： 参与嵌入式项目，如智能家居、物联网设备等，实践应用技能。"),
@@ -66,8 +81,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<InterviewResultVO> getInterviewResult(String studentId) {
-        return studentMapper.selectOne(new QueryWrapper<Student>().eq("student_id", studentId)) == null
-                ? List.of()
-                : studentMapper.selectInterviewResults(studentId);
+        return studentMapper.selectInterviewResults(studentId);
     }
 }

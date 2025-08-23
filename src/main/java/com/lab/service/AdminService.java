@@ -1,20 +1,18 @@
 package com.lab.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
-import com.lab.dto.AdminRegisterDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
-import com.lab.vo.InterviewResultVO;
-
-import java.util.List;
+import com.lab.vo.AdminStudentVO;
 
 public interface AdminService {
-    void register(AdminRegisterDTO dto);
     String login(AdminLoginDTO dto);
-    List<Student> listStudents(long current, long size);
-    List<InterviewStudent> listInterviewStudents();
+    IPage<Student> listStudents(int current, int size);
+    IPage<InterviewStudent> listInterviewStudents(int current, int size);
+    IPage<AdminStudentVO> listInterviewResults(int current, int size);
     void addInterviewStudent(InterviewStudent stu);
     void updateInterviewStudent(InterviewStudent stu);
     void deleteInterviewStudent(Integer id);
-    List<InterviewResultVO> listInterviewResults();
+    IPage<Student> searchStudentsByName(int current, int size, String name);
 }
