@@ -72,17 +72,10 @@ public class StudentController {
     @PostMapping("/apply")
     @Operation(summary = "学生报名")
     public ResultVO<Void> apply(@Validated @RequestBody InterviewStudentDTO dto) {
-        InterviewStudent stu = new InterviewStudent();
-        BeanUtils.copyProperties(dto, stu);
-        interviewStudentMapper.insert(stu);
+        studentService.apply(dto);
         return ResultVO.success();
     }
 
-    @GetMapping("/directions")
-    @Operation(summary = "查看四大方向")
-    public ResultVO<List<DirectionVO>> directions() {
-        return ResultVO.success(studentService.getDirections());
-    }
 
     @GetMapping("/interview-result")
     @Operation(summary = "查看面试结果")

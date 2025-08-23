@@ -70,16 +70,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<DirectionVO> getDirections() {
-        return Arrays.asList(
-                new DirectionVO("嵌入式开发", "基础知识： 学习嵌入式系统的基本原理、硬件结构和编程语言（如C、C++）。\n学习硬件： 掌握单片机、传感器、嵌入式系统的设计和开发。\nRTOS学习： 熟悉实时操作系统（RTOS）的使用和应用。\n项目实践： 参与嵌入式项目，如智能家居、物联网设备等，实践应用技能。"),
-                new DirectionVO("后台开发", "编程语言： 学习后台开发常用的编程语言，如Java、Python、Node.js等。\n数据库： 掌握数据库设计和管理，如MySQL、MongoDB等。\n框架技术： 学习后台开发框架，如Spring、Django等。\n微服务架构： 了解微服务架构和RESTful API设计。\n安全和性能优化： 学习如何保障系统安全性和性能优化。"),
-                new DirectionVO("前端开发", "HTML/CSS/JavaScript： 掌握前端基础技术，构建网页布局和交互效果。\n框架和库： 学习流行的前端框架和库，如React、Vue.js等。\n响应式设计： 了解响应式网页设计和移动端适配。\n版本控制： 掌握Git等版本控制工具的使用。\n跨平台开发： 学习跨平台开发技术，如React Native、Flutter等。"),
-                new DirectionVO("安卓开发", "Java/Kotlin： 掌握Java或Kotlin编程语言。\nAndroid SDK： 学习Android开发工具和框架。\n布局和界面设计： 了解Android布局和用户界面设计。\n数据存储： 学习Android数据存储技术，如SQLite、Room等。\n发布和优化： 学习应用发布流程和性能优化技巧。")
-        );
-    }
-
-    @Override
     public List<InterviewResultVO> getInterviewResult(String studentId) {
         return studentMapper.selectInterviewResults(studentId);
     }

@@ -1,7 +1,6 @@
 package com.lab.config;
 
 import com.lab.interceptor.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +27,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/kaptcha/**",
                                 "/student/register",
-                                "/admin/login",
-                                "/student/login",
+                                "/admin",
+                                "/student",
+                                "/home/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()

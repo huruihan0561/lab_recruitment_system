@@ -14,6 +14,5 @@ public interface StudentService {
     void register(RegisterDTO dto);
     String login(LoginDTO dto);
     void apply(InterviewStudentDTO dto);
-    List<DirectionVO> getDirections();
     List<InterviewResultVO> getInterviewResult(String studentId);
 }
