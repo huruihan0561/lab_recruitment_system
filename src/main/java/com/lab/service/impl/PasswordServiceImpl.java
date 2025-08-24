@@ -29,10 +29,11 @@ public class PasswordServiceImpl implements PasswordService {
         return studentMapper.updatePassword(studentId, PasswordUtils.encode(newPwd)) > 0;
     }
 
+
     @Override
     public boolean changeAdminPassword(String adminId, String oldPwd, String newPwd) {
         Admin admin = adminMapper.selectOne(
-                new QueryWrapper<Admin>().eq("admin_Id", adminId));
+                new QueryWrapper<Admin>().eq("admin_id", adminId));
         if (admin == null || !PasswordUtils.matches(oldPwd, admin.getPassword())) {
             return false;
         }

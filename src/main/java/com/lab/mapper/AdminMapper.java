@@ -29,6 +29,6 @@ public interface AdminMapper extends BaseMapper<Admin> {
             "FROM interview_result r JOIN student s ON r.student_id = s.student_id")
     IPage<AdminStudentVO> selectInterviewResults(Page<AdminStudentVO> page);
 
-    @Update("UPDATE student SET password = #{newPwd} WHERE student_id = #{id}")
+    @Update("UPDATE admin SET password = #{newPwd} WHERE admin_id = #{id}")
     int updatePassword(@Param("id") String id, @Param("newPwd") String newPwd);
 }
