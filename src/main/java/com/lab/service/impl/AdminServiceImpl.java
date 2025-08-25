@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
-import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.Admin;
 import com.lab.entity.InterviewResult;
@@ -21,7 +20,6 @@ import com.lab.util.PasswordUtils;
 import com.lab.vo.AdminStudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
