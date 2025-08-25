@@ -11,7 +11,7 @@ import lombok.Data;
 public class AdminRegisterDTO {
 
     @NotBlank(message = "管理员编号不能为空")
-    @Pattern(regexp = "^admin\\d+$", message = "管理员编号格式错误（需以admin开头加数字）")
+    @Pattern(regexp = "^admin\\d+$", message = "管理员编号格式错误")
     @Schema(description = "管理员编号（如admin001）")
     private String adminId;
 

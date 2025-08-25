@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.Admin;
 import com.lab.entity.InterviewResult;
@@ -20,6 +21,7 @@ import com.lab.util.PasswordUtils;
 import com.lab.vo.AdminStudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -79,16 +81,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void addInterviewStudent(InterviewStudent stu) {
         interviewStudentMapper.insert(stu);
+        InterviewResult result = new InterviewResult();
+        result.setStudentId(stu.getStudentId());
+        result.setStudentName(stu.getName());
+        result.setDirection(stu.getDirection());
+        result.setStatus("待面试");
+        result.setInterviewTime(stu.getInterviewTime());
+        interviewResultMapper.insert(result);
     }
 
-    @Override
-    public void updateInterviewStudent(InterviewStudent stu) {
-        interviewStudentMapper.updateById(stu);
-    }
 
     @Override
-    public void deleteInterviewStudent(String id) {
-        interviewStudentMapper.deleteById(id);
+    public void deleteInterviewStudent(String studentId) {
+        // 1. 删除报名学生
+        interviewStudentMapper.delete(new QueryWrapper<InterviewStudent>().eq("student_id", studentId));
+        // 2. 删除面试结果
+        interviewResultMapper.delete(new QueryWrapper<InterviewResult>().eq("student_id", studentId));
     }
 
 

@@ -3,6 +3,7 @@ package com.lab.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -33,7 +34,8 @@ public class InterviewStudent {
 
     @Schema(description = "座右铭")
     private String motto;
-    
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     @Schema(description = "面试时间")
     private Date interviewTime;
 }

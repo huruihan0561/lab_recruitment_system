@@ -3,6 +3,7 @@ package com.lab.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.AdminRegisterDTO;
+import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
@@ -16,7 +17,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,12 +88,6 @@ public class AdminController {
         return ResultVO.success();
     }
 
-    @PutMapping("/interview-student")
-    @Operation(summary = "修改报名学生")
-    public ResultVO<Void> update(@RequestBody InterviewStudent stu) {
-        adminService.updateInterviewStudent(stu);
-        return ResultVO.success();
-    }
 
     @PutMapping("/interview-result")
     @Operation(summary = "修改学生面试结果")
@@ -103,8 +97,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/interview-student/{id}")
-    @Operation(summary = "删除报名学生")
-    public ResultVO<Void> delete(@PathVariable String studentId) {
+    @Operation(summary = "删除学生")
+    public ResultVO<Void> deleteInterviewStudentByStudentId(@PathVariable("id") String studentId) {
         adminService.deleteInterviewStudent(studentId);
         return ResultVO.success();
     }

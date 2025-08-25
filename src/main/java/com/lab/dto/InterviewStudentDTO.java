@@ -1,5 +1,6 @@
 package com.lab.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class InterviewStudentDTO {
     private String motto;
 
     @Schema(description ="面试时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     @NotNull(message = "面试时间不能为空")
     private Date interviewTime;
 }
