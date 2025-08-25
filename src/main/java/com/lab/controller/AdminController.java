@@ -80,22 +80,29 @@ public class AdminController {
     }
 
 
-    @PostMapping("/interview-student")
+    @PostMapping("/add-student")
     @Operation(summary = "添加报名学生")
     public ResultVO<Void> add(@RequestBody InterviewStudent stu) {
         adminService.addInterviewStudent(stu);
         return ResultVO.success();
     }
 
+    @PutMapping("/update-student")
+    @Operation(summary = "修改报名学生")
+    public ResultVO<Void> update(@Valid @RequestBody InterviewStudent stu) {
+        adminService.updateInterviewStudent(stu);
+        return ResultVO.success();
+    }
 
-    @PutMapping("/interview-result")
+
+    @PutMapping("/update-result")
     @Operation(summary = "修改学生面试结果")
     public ResultVO<Void> updateInterviewResult(@RequestBody @Valid UpdateInterviewResultDTO dto) {
         adminService.updateInterviewResult(dto);
         return ResultVO.success();
     }
 
-    @DeleteMapping("/interview-student/{id}")
+    @DeleteMapping("/delete-student/{id}")
     @Operation(summary = "删除学生")
     public ResultVO<Void> deleteInterviewStudentByStudentId(@PathVariable("id") String studentId) {
         adminService.deleteInterviewStudent(studentId);

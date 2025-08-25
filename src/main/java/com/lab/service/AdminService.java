@@ -18,4 +18,5 @@ public interface AdminService {
     IPage<Student> searchStudentsByName(int current, int size, String name);
     void register(AdminRegisterDTO dto);
     void updateInterviewResult(UpdateInterviewResultDTO dto);
+    void updateInterviewStudent(InterviewStudent stu);
 }

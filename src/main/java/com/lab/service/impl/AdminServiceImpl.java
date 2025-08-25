@@ -1,6 +1,7 @@
 package com.lab.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.dto.AdminLoginDTO;
@@ -88,6 +89,43 @@ public class AdminServiceImpl implements AdminService {
         interviewResultMapper.insert(result);
     }
 
+    @Override
+    public void updateInterviewStudent(InterviewStudent updatedStu) {
+        InterviewStudent existing = interviewStudentMapper.selectByStudentId(updatedStu.getStudentId());
+        if (existing == null) {
+            throw new IllegalArgumentException("该学生未报名");
+        }
+        if (!existing.getStudentId().equals(updatedStu.getStudentId())) {
+            throw new IllegalArgumentException("学号不允许修改");
+        }
+        UpdateWrapper<InterviewStudent> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("student_id", updatedStu.getStudentId());
+        if (updatedStu.getName() != null) {
+            updateWrapper.set("name", updatedStu.getName());
+        }
+        if (updatedStu.getDirection() != null) {
+            updateWrapper.set("direction", updatedStu.getDirection());
+        }
+        if (updatedStu.getInterviewTime() != null) {
+            updateWrapper.set("interview_time", updatedStu.getInterviewTime());
+        }
+        interviewStudentMapper.update(null, updateWrapper);
+        InterviewResult result = interviewResultMapper.selectOne(
+                new QueryWrapper<InterviewResult>().eq("student_id", updatedStu.getStudentId())
+        );
+        if (result != null) {
+            if (updatedStu.getName() != null) {
+                result.setStudentName(updatedStu.getName());
+            }
+            if (updatedStu.getDirection() != null) {
+                result.setDirection(updatedStu.getDirection());
+            }
+            if (updatedStu.getInterviewTime() != null) {
+                result.setInterviewTime(updatedStu.getInterviewTime());
+            }
+            interviewResultMapper.updateById(result);
+        }
+    }
 
     @Override
     public void deleteInterviewStudent(String studentId) {
