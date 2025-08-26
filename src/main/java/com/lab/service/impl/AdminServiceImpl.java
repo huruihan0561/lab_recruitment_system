@@ -19,10 +19,13 @@ import com.lab.service.AdminService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
 import com.lab.vo.AdminStudentVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
@@ -78,6 +81,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addInterviewStudent(InterviewStudent stu) {
         interviewStudentMapper.insert(stu);
         InterviewResult result = new InterviewResult();
