@@ -23,12 +23,15 @@ public class JwtUtil {
     }
 
     public String generateToken(String subject) {
-        return Jwts.builder()
-                .setSubject(subject)
+        String cleanSubject = subject.trim();
+        String token =  Jwts.builder()
+                .setSubject(cleanSubject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
+        System.out.println("生成的JWT Token: " + token);
+        return token;
     }
 
     public String getSubject(String token) {
@@ -40,7 +43,7 @@ public class JwtUtil {
                     .getBody()
                     .getSubject();
         } catch (JwtException e) {
-            return null;
+            throw new JwtException("Token无效或已过期：" + e.getMessage());
         }
     }
 
