@@ -24,13 +24,11 @@ public class JwtUtil {
 
     public String generateToken(String subject) {
         String cleanSubject = subject.trim();
-        String token =  Jwts.builder()
-                .setSubject(cleanSubject)
+        return Jwts.builder().setSubject(cleanSubject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
-        return token;
     }
 
     public String getSubject(String token) {
