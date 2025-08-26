@@ -17,6 +17,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private AdminMapper adminMapper;
 
+
     @Override
     @Transactional
     public void run(String... args) {

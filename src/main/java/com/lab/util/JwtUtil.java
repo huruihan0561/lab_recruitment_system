@@ -30,7 +30,6 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
-        System.out.println("生成的JWT Token: " + token);
         return token;
     }
 
