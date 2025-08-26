@@ -47,10 +47,6 @@ public class JwtUtil {
         }
     }
 
-    public boolean validate(String token) {
-        return getSubject(token) != null;
-    }
-
     public String extractUsername(String token) {
         return getSubject(token);
     }
