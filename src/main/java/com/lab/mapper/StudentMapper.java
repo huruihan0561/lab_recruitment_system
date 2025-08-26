@@ -12,8 +12,15 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
-    @Select("SELECT r.id, r.student_id, s.name, r.status " +
-            "FROM interview_result r JOIN student s ON r.student_id = s.student_id " +
+    @Select("SELECT " +
+            "r.id, " +
+            "r.student_id AS studentId, " +
+            "s.name AS studentName, " +
+            "r.direction AS direction, " +
+            "r.status AS status, " +
+            "r.interview_time AS interviewTime " +
+            "FROM interview_result r " +
+            "JOIN student s ON r.student_id = s.student_id " +
             "WHERE r.student_id = #{studentId}")
     List<InterviewResultVO> selectInterviewResults(@Param("studentId") String studentId);
 

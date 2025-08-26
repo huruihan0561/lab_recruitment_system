@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/admin/login",
                                 "/admin/register",
                                 "/home/**",
+                                "/student/send-code",
                                 "/password/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
