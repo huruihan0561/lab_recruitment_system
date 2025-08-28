@@ -14,12 +14,6 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface AdminMapper extends BaseMapper<Admin> {
 
-    @Select("SELECT * FROM admin WHERE name = #{name}")
-    Admin selectByName(@Param("name") String name);
-
-    @Select("SELECT * FROM admin WHERE admin_id = #{adminId}")
-    Admin selectByAdminId(@Param("adminId") String adminId);
-
     // 模糊搜索学生
     @Select("SELECT * FROM student WHERE name LIKE CONCAT('%', #{name}, '%')")
     IPage<Student> selectStudentsByName(Page<Student> page, @Param("name") String name);
