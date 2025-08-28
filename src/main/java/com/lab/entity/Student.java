@@ -31,4 +31,7 @@ public class Student {
     
     @Schema(description = "邮箱")
     private String email;
+
+    @Schema(description = "年级")
+    private String grade;
 }

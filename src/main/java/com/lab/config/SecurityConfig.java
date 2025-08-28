@@ -40,13 +40,12 @@ public class SecurityConfig {
                                 "/student/register",
                                 "/student/login",
                                 "/admin/login",
-                                "/admin/register",
                                 "/home/**",
                                 "/student/send-code",
                                 "/password/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "time/available"
+                                "/options/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/student/**").hasRole("STUDENT")

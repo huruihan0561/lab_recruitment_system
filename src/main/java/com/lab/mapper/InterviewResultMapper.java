@@ -12,9 +12,8 @@ import java.util.List;
 
 @Mapper
 public interface InterviewResultMapper extends BaseMapper<InterviewResult> {
-    @Select("SELECT r.id, r.student_id, s.name, r.status " +
+    @Select("SELECT r.*, s.name " +
             "FROM interview_result r JOIN student s ON r.student_id = s.student_id")
-    List<InterviewResultVO> selectInterviewResults();
-
+    List<InterviewResult> selectInterviewResults();
 
 }

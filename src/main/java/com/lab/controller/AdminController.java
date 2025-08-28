@@ -3,11 +3,11 @@ package com.lab.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
+import com.lab.entity.InterviewResult;
 import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
 import com.lab.service.PasswordService;
-import com.lab.vo.AdminStudentVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,7 +65,7 @@ public class AdminController {
 
     @GetMapping("/interview-results")
     @Operation(summary = "查看学生面试结果")
-    public ResultVO<IPage<AdminStudentVO>> interviewResults(
+    public ResultVO<IPage<InterviewResult>> interviewResults(
             @RequestParam(defaultValue = "1") int current,
             @RequestParam(defaultValue = "10") int size) {
         return ResultVO.success(adminService.listInterviewResults(current, size));

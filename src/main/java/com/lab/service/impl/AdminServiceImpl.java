@@ -17,11 +17,13 @@ import com.lab.mapper.StudentMapper;
 import com.lab.service.AdminService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
-import com.lab.vo.AdminStudentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -53,15 +55,15 @@ public class AdminServiceImpl implements AdminService {
         return studentMapper.selectPage(new Page<>(current, size), null);
     }
 
-    /* 分页查看报名学生 */
+
     @Override
     public IPage<InterviewStudent> listInterviewStudents(int current, int size) {
         return interviewStudentMapper.selectPage(new Page<>(current, size), null);
     }
 
-    /* 分页多表联查面试结果 */
+
     @Override
-    public IPage<AdminStudentVO> listInterviewResults(int current, int size) {
+    public IPage<InterviewResult> listInterviewResults(int current, int size) {
         return adminMapper.selectInterviewResults(new Page<>(current, size));
     }
 
@@ -73,6 +75,7 @@ public class AdminServiceImpl implements AdminService {
         result.setStudentId(stu.getStudentId());
         result.setStudentName(stu.getName());
         result.setDirection(stu.getDirection());
+        result.setInterviewMethod(stu.getInterviewMethod());
         result.setStatus("待面试");
         result.setInterviewTime(stu.getInterviewTime());
         interviewResultMapper.insert(result);
@@ -137,6 +140,10 @@ public class AdminServiceImpl implements AdminService {
         );
         if (result == null) {
             throw new IllegalArgumentException("该学生未报名或不存在面试记录");
+        }
+        List<String> validStatuses = Arrays.asList("未通过", "已通过");
+        if (!validStatuses.contains(dto.getStatus())) {
+            throw new IllegalArgumentException("无效的面试状态");
         }
         result.setStatus(dto.getStatus());
         result.setRemark(dto.getRemark());

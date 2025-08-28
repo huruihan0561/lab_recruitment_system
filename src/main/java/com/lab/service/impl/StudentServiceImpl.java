@@ -44,6 +44,7 @@ public class StudentServiceImpl implements StudentService {
         Student stu = new Student();
         stu.setName(dto.getName());
         stu.setStudentId(dto.getStudentId());
+        stu.setGrade(dto.getGrade());
         stu.setMajor(dto.getMajor());
         stu.setPhone(dto.getPhone());
         stu.setEmail(dto.getEmail());
@@ -78,6 +79,7 @@ public class StudentServiceImpl implements StudentService {
         stu.setEmail(student.getEmail());
         stu.setPhone(student.getPhone());
         stu.setDirection(dto.getDirection());
+        stu.setInterviewMethod(dto.getInterviewMethod());
         stu.setMotto(dto.getMotto());
         stu.setInterviewTime(dto.getInterviewTime());
         interviewStudentMapper.insert(stu);
@@ -86,6 +88,7 @@ public class StudentServiceImpl implements StudentService {
         result.setStudentId(dto.getStudentId());
         result.setStudentName(dto.getName());
         result.setDirection(dto.getDirection());
+        result.setInterviewMethod(dto.getInterviewMethod());
         result.setStatus("待面试");
         result.setInterviewTime(dto.getInterviewTime());
         interviewResultMapper.insert(result);

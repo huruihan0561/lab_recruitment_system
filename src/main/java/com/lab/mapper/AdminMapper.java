@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lab.entity.Admin;
+import com.lab.entity.InterviewResult;
 import com.lab.entity.Student;
-import com.lab.vo.AdminStudentVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -24,11 +24,8 @@ public interface AdminMapper extends BaseMapper<Admin> {
     @Select("SELECT * FROM student WHERE name LIKE CONCAT('%', #{name}, '%')")
     IPage<Student> selectStudentsByName(Page<Student> page, @Param("name") String name);
 
-    //面试结果多表联查
-    @Select("SELECT r.id, r.student_id, s.name, r.status " +
-            "FROM interview_result r JOIN student s ON r.student_id = s.student_id")
-    IPage<AdminStudentVO> selectInterviewResults(Page<AdminStudentVO> page);
-
-    @Update("UPDATE admin SET password = #{newPwd} WHERE admin_id = #{id}")
-    int updatePassword(@Param("id") String id, @Param("newPwd") String newPwd);
+    @Select("SELECT r.* " +
+            "FROM interview_result r " +
+            "LEFT JOIN student s ON r.student_id = s.student_id")
+    IPage<InterviewResult> selectInterviewResults(Page<InterviewResult> page);
 }

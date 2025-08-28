@@ -35,6 +35,9 @@ public class InterviewStudent {
     @Schema(description = "座右铭")
     private String motto;
 
+    @Schema(description = "面试方式")
+    private String interviewMethod;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     @Schema(description = "面试时间")
     private Date interviewTime;

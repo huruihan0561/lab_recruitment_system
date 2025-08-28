@@ -11,6 +11,10 @@ public class RegisterDTO {
         @NotNull(message = "姓名不能为空！")
         private String name;
 
+        @Schema(description = "年级")
+        @NotNull(message = "年级不能为空！")
+        private String grade;
+
         @Schema(description = "学生专业")
         @NotNull(message = "专业不能为空！")
         private String major;

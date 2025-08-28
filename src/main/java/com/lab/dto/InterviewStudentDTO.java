@@ -19,6 +19,10 @@ public class InterviewStudentDTO {
     @NotBlank(message = "学生学号不能为空")
     private String studentId;
 
+    @Schema(description = "面试方式")
+    @NotNull(message = "面试方式不能为空")
+    private String interviewMethod;
+
     @Schema(description = "意向方向")
     @NotBlank(message = "意向方向不能为空")
     private String direction;
