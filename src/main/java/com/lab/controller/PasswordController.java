@@ -27,12 +27,7 @@ public class PasswordController {
         return success ? ResultVO.success() : ResultVO.fail("修改失败");
     }
 
-    @PostMapping("/change-admin")
-    @Operation(summary = "管理员修改密码")
-    public ResultVO<Void> changeAdminPassword(@Valid @RequestBody ChangePwdDTO dto) {
-        boolean success = passwordService.changeAdminPassword(dto.getId(), dto.getOldPassword(), dto.getNewPassword());
-        return success ? ResultVO.success() : ResultVO.fail("修改失败");
-    }
+
 
 
 }
