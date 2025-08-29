@@ -2,8 +2,8 @@ package com.lab.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.Admin;
@@ -51,20 +51,26 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public IPage<Student> listStudents(int current, int size) {
-        return studentMapper.selectPage(new Page<>(current, size), null);
+    public PageInfo<Student> listStudents(int current, int size) {
+        PageHelper.startPage(current, size);
+        List<Student> students = studentMapper.selectList(null);
+        return new PageInfo<>(students);
     }
 
 
     @Override
-    public IPage<InterviewStudent> listInterviewStudents(int current, int size) {
-        return interviewStudentMapper.selectPage(new Page<>(current, size), null);
+    public PageInfo<InterviewStudent> listInterviewStudents(int current, int size) {
+        PageHelper.startPage(current, size);
+        List<InterviewStudent> list = interviewStudentMapper.selectList(null);
+        return new PageInfo<>(list);
     }
 
 
     @Override
-    public IPage<InterviewResult> listInterviewResults(int current, int size) {
-        return adminMapper.selectInterviewResults(new Page<>(current, size));
+    public PageInfo<InterviewResult> listInterviewResults(int current, int size) {
+        PageHelper.startPage(current, size);
+        List<InterviewResult> results = adminMapper.selectInterviewResults();
+        return new PageInfo<>(results);
     }
 
     @Override
@@ -129,8 +135,10 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public IPage<Student> searchStudentsByName(int current, int size, String name) {
-        return adminMapper.selectStudentsByName(new Page<>(current, size), name);
+    public PageInfo<Student> searchStudentsByName(int current, int size, String name) {
+        PageHelper.startPage(current, size);
+        List<Student> students = adminMapper.selectStudentsByName(name);
+        return new PageInfo<>(students);
     }
 
     @Override

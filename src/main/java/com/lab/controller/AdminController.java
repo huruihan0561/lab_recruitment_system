@@ -1,6 +1,7 @@
 package com.lab.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import com.lab.dto.AdminLoginDTO;
 import com.lab.dto.UpdateInterviewResultDTO;
 import com.lab.entity.InterviewResult;
@@ -40,25 +41,23 @@ public class AdminController {
 
 
     @GetMapping("/students")
-    @Operation(summary = "查看所有注册学生")
-    public ResultVO<IPage<Student>> students(@RequestParam(defaultValue = "1") int current,
-                                             @RequestParam(defaultValue = "10") int size) {
+    @Operation(summary = "查看注册学生")
+    public ResultVO<PageInfo<Student>> students(@RequestParam(defaultValue = "1") int current,
+                                                @RequestParam(defaultValue = "10") int size) {
         return ResultVO.success(adminService.listStudents(current, size));
     }
 
-
     @GetMapping("/interview-students")
-    @Operation(summary ="查看所有报名学生")
-    public ResultVO<IPage<InterviewStudent>> interviewStudents(
+    @Operation(summary = "查看报名学生")
+    public ResultVO<PageInfo<InterviewStudent>> interviewStudents(
             @RequestParam(defaultValue = "1") int current,
             @RequestParam(defaultValue = "10") int size) {
         return ResultVO.success(adminService.listInterviewStudents(current, size));
     }
 
-
     @GetMapping("/interview-results")
     @Operation(summary = "查看学生面试结果")
-    public ResultVO<IPage<InterviewResult>> interviewResults(
+    public ResultVO<PageInfo<InterviewResult>> interviewResults(
             @RequestParam(defaultValue = "1") int current,
             @RequestParam(defaultValue = "10") int size) {
         return ResultVO.success(adminService.listInterviewResults(current, size));
@@ -96,8 +95,8 @@ public class AdminController {
 
 
     @GetMapping("/search")
-    @Operation(summary = "根据学生姓名进行模糊查询")
-    public ResultVO<IPage<Student>> search(
+    @Operation(summary = "根据学生姓名模糊查询")
+    public ResultVO<PageInfo<Student>> search(
             @RequestParam(defaultValue = "1") int current,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam String name) {
