@@ -8,6 +8,7 @@ import com.lab.entity.InterviewStudent;
 import com.lab.entity.Student;
 import com.lab.service.AdminService;
 import com.lab.service.PasswordService;
+import com.lab.util.KaptchaValidator;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,21 +28,13 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    @Autowired
-    private PasswordService passwordService;
+    private KaptchaValidator kaptchaValidator;
 
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
     public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto,
-                                  @RequestParam String kaptcha,
                                   HttpSession session) {
-        String cache = redisTemplate.opsForValue().get("kaptcha:" + session.getId());
-        if (!kaptcha.equalsIgnoreCase(cache)) {
-            return ResultVO.fail("验证码错误");
-        }
-        redisTemplate.delete("kaptcha:" + session.getId());
+        kaptchaValidator.validate(dto.getKaptcha(), session);
         return ResultVO.success(adminService.login(dto));
     }
 

@@ -36,7 +36,7 @@ public class OptionController {
     }
 
     @GetMapping("/time")
-    @Operation(summary = "获取可选面试时间选项列表列表")
+    @Operation(summary = "获取可选面试时间选项列表")
     public List<String> availableTimes() {
         List<String> times = new ArrayList<>();
         //从今天起，每天两个时间段

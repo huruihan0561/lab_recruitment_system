@@ -8,6 +8,7 @@ import com.lab.mapper.InterviewStudentMapper;
 import com.lab.service.PasswordService;
 import com.lab.service.StudentService;
 import com.lab.util.EmailUtil;
+import com.lab.util.KaptchaValidator;
 import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +34,10 @@ public class StudentController {
     @Autowired
     private EmailUtil emailUtil;
     @Autowired
-    private StringRedisTemplate redisTemplate;
-    @Autowired
     private PasswordService passwordService;
+    @Autowired
+    private KaptchaValidator kaptchaValidator;
+
 
     @PostMapping("/send-code")
     @Operation(summary = "发送邮箱验证码")
@@ -56,13 +58,8 @@ public class StudentController {
     @PostMapping("/login")
     @Operation(summary = "学生登录")
     public ResultVO<String> login(@Validated @RequestBody LoginDTO dto,
-                                  @RequestParam String kaptcha,
                                   HttpSession session) {
-        String cache = redisTemplate.opsForValue().get("kaptcha:" + session.getId());
-        if (!kaptcha.equalsIgnoreCase(cache)) {
-            return ResultVO.fail("验证码错误");
-        }
-        redisTemplate.delete("kaptcha:" + session.getId());
+        kaptchaValidator.validate(dto.getKaptcha(), session);
         return ResultVO.success(studentService.login(dto));
     }
 

@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 public class UpdateInterviewResultDTO {
-    @NotNull(message = "学生ID不能为空")
+
+    @NotNull(message = "学生学号不能为空")
     private String studentId;
 
     @NotBlank(message = "面试状态不能为空")

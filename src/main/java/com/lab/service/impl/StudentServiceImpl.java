@@ -13,10 +13,8 @@ import com.lab.mapper.StudentMapper;
 import com.lab.service.StudentService;
 import com.lab.util.JwtUtil;
 import com.lab.util.PasswordUtils;
-import com.lab.util.ValidatorUtil;
 import com.lab.vo.InterviewResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -26,8 +24,6 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
     @Autowired
-    private StringRedisTemplate redisTemplate;
-    @Autowired
     private JwtUtil jwtUtil;
     @Autowired
     private InterviewStudentMapper interviewStudentMapper;
@@ -36,7 +32,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void register(RegisterDTO dto) {
-        ValidatorUtil.validatePhone(dto.getPhone());
         if (dto.getPassword().length() < 6) throw new IllegalArgumentException("密码不足6位");
         if (studentMapper.selectCount(new QueryWrapper<Student>().eq("student_id", dto.getStudentId())) > 0)
             throw new IllegalArgumentException("学号已存在");
