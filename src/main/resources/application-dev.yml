@@ -22,12 +22,22 @@ spring:
     host: smtp.qq.com
     username: 3267872945@qq.com
     password: xbrhxprzzbktchgc
+    port: 465
+    protocol: smtp
+    default-encoding: UTF-8
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            class: jakarta.net.ssl.SSLSocketFactory
+            port: 465
+        debug: true
 
 jwt:
-  secret: x7@d#9a$F6!qZ2&pL4*eW8^rT3%yU1$5sX9@L8!qW7#rY2%tZ4&uO6*pI3@L9!
+  secret: "x7@d#9a$F6!qZ2&pL4*eW8^rT3%yU1$5sX9@L8!qW7#rY2%tZ4&uO6*pI3@L9!"
   expiration: 86400000 # 24小时有效期
 
 mybatis-plus:
@@ -37,6 +47,11 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+
 logging:
   level:
     com.lab.mapper: debug
+

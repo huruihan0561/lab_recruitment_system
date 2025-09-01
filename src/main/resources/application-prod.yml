@@ -1,0 +1,55 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/lab_recruit?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: lab_user
+    password: 123456
+
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      connect-timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  mail:
+    host: smtp.qq.com
+    username: 3267872945@qq.com
+    password: xbrhxprzzbktchgc
+    port: 465
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            class: jakarta.net.ssl.SSLSocketFactory
+            port: 465
+        debug: true
+
+jwt:
+  secret: "x7@d#9a$F6!qZ2&pL4*eW8^rT3%yU1$5sX9@L8!qW7#rY2%tZ4&uO6*pI3@L9!"
+  expiration: 86400000 # 24小时有效期
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+
+logging:
+  level:
+    com.lab.mapper: debug

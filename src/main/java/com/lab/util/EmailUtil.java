@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lab.entity.Student;
 import com.lab.mapper.StudentMapper;
 import com.lab.vo.ResultVO;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -47,13 +50,23 @@ public class EmailUtil {
         redisTemplate.opsForValue().set(lockKey, "1", Duration.ofSeconds(60));
 
         //发邮件
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom(from);
-        msg.setTo(email);
-        msg.setSubject("TC实验室纳新系统-验证码");
-        msg.setText("您的验证码是：" + code + ",有效期为5分钟。请勿向他人泄露");
-        mailSender.send(msg);
-        return ResultVO.success();
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setFrom(from);
+            helper.setTo(email);
+            helper.setSubject("TC实验室纳新系统-验证码");
+            helper.setText("您的验证码是：" + code + ",有效期为5分钟。请勿向他人泄露", false);
+
+            mailSender.send(message);
+            return ResultVO.success();
+        } catch (MessagingException e) {
+            // 发送失败时清理Redis数据
+            redisTemplate.delete("email_code:" + email);
+            redisTemplate.delete(lockKey);
+            return ResultVO.fail("邮件发送失败: " + e.getMessage());
+        }
     }
 
         //校验验证码，安全删除

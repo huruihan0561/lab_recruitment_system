@@ -109,11 +109,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-<!--        拦截器-->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-jsqlparser</artifactId>
-            <version>3.5.12</version>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.7</version>
         </dependency>
 
         <!-- 邮箱 -->
