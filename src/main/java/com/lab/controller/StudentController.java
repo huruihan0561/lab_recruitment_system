@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +49,9 @@ public class StudentController {
     public ResultVO<Void> register(@Validated @RequestBody RegisterDTO dto,@RequestParam String code) {
         if (!emailUtil.validate(dto.getEmail(), code)) {
             return ResultVO.fail("验证码错误或已过期");
+        }
+        if(!dto.PasswordMatch()){
+            return ResultVO.fail("两次输入密码不一致");
         }
         studentService.register(dto);
         return ResultVO.success();
