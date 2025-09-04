@@ -17,5 +17,8 @@ public class LoginDTO {
     @Schema(description = "验证码")
     @NotBlank(message = "验证码不能为空")
     private String kaptcha;
+    @Schema(description = "验证码对应的key")
+    @NotBlank(message = "验证码key不能为空")
+    private String kaptchaKey;
 
 }

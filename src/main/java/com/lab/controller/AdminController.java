@@ -30,9 +30,8 @@ public class AdminController {
 
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
-    public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto,
-                                  HttpSession session) {
-        kaptchaValidator.validate(dto.getKaptcha(), session);
+    public ResultVO<String> login(@Validated @RequestBody AdminLoginDTO dto) {
+        kaptchaValidator.validate(dto.getKaptcha(), dto.getKaptchaKey());
         return ResultVO.success(adminService.login(dto));
     }
 

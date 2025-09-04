@@ -12,13 +12,12 @@ public class KaptchaValidator {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    public ResultVO<Void> validate(String kaptcha, HttpSession session) {
-        String cacheKey = "kaptcha:" + session.getId();
+    public ResultVO<Void> validate(String kaptcha, String key) {
+        String cacheKey = "kaptcha:" + key;
         String realKaptcha = redisTemplate.opsForValue().get(cacheKey);
         if (realKaptcha == null) {
             throw new IllegalArgumentException("验证码已过期，请重新获取");
         }
-
         if (!realKaptcha.equalsIgnoreCase(kaptcha)) {
             throw new IllegalArgumentException("验证码错误，请重新输入");
         }

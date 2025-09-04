@@ -2,7 +2,6 @@ package com.lab.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/kaptcha")
@@ -27,10 +29,19 @@ public class KaptchaController {
     private StringRedisTemplate redisTemplate;
 
     @GetMapping("/image")
-    public void kaptchaImage(HttpSession session, HttpServletResponse response) throws IOException {
+    public Map<String, String> kaptchaImage(HttpSession session) throws IOException {
         String text = kaptcha.createText();
-        redisTemplate.opsForValue().set("kaptcha:" + session.getId(), text, Duration.ofMinutes(5));
-        response.setContentType("image/jpeg");
-        ImageIO.write(kaptcha.createImage(text), "jpg", response.getOutputStream());
+        String key = session.getId();
+        redisTemplate.opsForValue().set("kaptcha:" + key, text, Duration.ofMinutes(5));
+
+        // 返回验证码图片和 key
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(kaptcha.createImage(text), "jpg", os);
+        String base64 = Base64.getEncoder().encodeToString(os.toByteArray());
+
+        return Map.of(
+                "key", key,
+                "image", "data:image/jpeg;base64," + base64
+        );
     }
 }

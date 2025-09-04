@@ -1,19 +1,22 @@
 package com.lab.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lab.dto.InterviewStudentDTO;
 import com.lab.dto.LoginDTO;
 import com.lab.dto.RegisterDTO;
-import com.lab.mapper.InterviewStudentMapper;
-import com.lab.service.PasswordService;
+import com.lab.entity.Student;
+import com.lab.mapper.StudentMapper;
 import com.lab.service.StudentService;
 import com.lab.util.EmailUtil;
+import com.lab.util.JwtUtil;
 import com.lab.util.KaptchaValidator;
+import com.lab.vo.CurrentStudentVO;
 import com.lab.vo.InterviewResultVO;
 import com.lab.vo.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,13 +32,13 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private InterviewStudentMapper interviewStudentMapper;
-    @Autowired
     private EmailUtil emailUtil;
     @Autowired
-    private PasswordService passwordService;
-    @Autowired
     private KaptchaValidator kaptchaValidator;
+    @Autowired
+    private StudentMapper studentMapper;
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     @PostMapping("/send-code")
@@ -59,9 +62,8 @@ public class StudentController {
 
     @PostMapping("/login")
     @Operation(summary = "学生登录")
-    public ResultVO<String> login(@Validated @RequestBody LoginDTO dto,
-                                  HttpSession session) {
-        kaptchaValidator.validate(dto.getKaptcha(), session);
+    public ResultVO<String> login(@Validated @RequestBody LoginDTO dto) {
+        kaptchaValidator.validate(dto.getKaptcha(), dto.getKaptchaKey());
         return ResultVO.success(studentService.login(dto));
     }
 
@@ -77,6 +79,26 @@ public class StudentController {
     @Operation(summary = "查看面试结果")
     public ResultVO<List<InterviewResultVO>> result(@RequestParam String studentId) {
         return ResultVO.success(studentService.getInterviewResult(studentId));
+    }
+
+    @GetMapping("/request")
+    @Operation(summary = "获取当前学生的学号和姓名")
+    public ResultVO<CurrentStudentVO> getCurrentStudent(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("未登录");
+        }
+        String studentId = jwtUtil.extractUsername(token.substring(7));
+
+        Student stu = studentMapper.selectOne(
+                new QueryWrapper<Student>().eq("student_id", studentId));
+        if (stu == null) {
+            throw new IllegalArgumentException("学生不存在");
+        }
+        CurrentStudentVO vo = new CurrentStudentVO();
+        vo.setStudentId(stu.getStudentId());
+        vo.setName(stu.getName());
+        return ResultVO.success(vo);
     }
 
 
